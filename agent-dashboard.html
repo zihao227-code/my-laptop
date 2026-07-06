@@ -74,7 +74,7 @@
 
 <div class="header">
   <h1>🤖 Agent 生态监控仪表盘</h1>
-  <p class="sub">6 个 Agent · 上次更新：2026-07-06 · 由 Agent管家 管理</p>
+  <p class="sub">5 个 Agent · 上次更新：2026-07-06 · 由 Agent管家 管理</p>
 </div>
 
 <!-- Agent Grid -->
@@ -150,20 +150,6 @@
     </div>
   </div>
 
-  <!-- 任务协调者 -->
-  <div class="agent-card">
-    <div class="bar bar-tc"></div>
-    <div class="body">
-      <span class="badge badge-ok">● 活跃</span>
-      <h3>📋 任务协调者</h3>
-      <div class="file">task-coordinator.md</div>
-      <div class="desc">用户桥梁——状态感知、优先级排序、跨Agent沟通、进度同步</div>
-      <div class="tags">
-        <span class="tag tag-core">协调</span><span class="tag tag-core">优先级</span><span class="tag tag-core">沟通</span>
-      </div>
-    </div>
-  </div>
-
 </div>
 
 <!-- Network Topology -->
@@ -196,13 +182,12 @@
   <h2>📊 协作矩阵（谁和谁配合）</h2>
   <table>
     <tr><th>场景</th><th>Agent 链</th><th>模式</th></tr>
-    <tr><td>需求分析</td><td>任务协调者 → BA导师 → 方案审视者 → 回复</td><td>链式</td></tr>
-    <tr><td>技术问题</td><td>任务协调者 → 问题方案探索者 → 方案审视者 → 技术执行者</td><td>链式</td></tr>
-    <tr><td>学习辅导</td><td>任务协调者 → BA导师 → 回复</td><td>简单</td></tr>
-    <tr><td>代码/安装</td><td>任务协调者 → 技术执行者 → 验证</td><td>简单</td></tr>
-    <tr><td>Agent 管理</td><td>任务协调者 → Agent管家 → 回复</td><td>简单</td></tr>
-    <tr><td>Bug 修复</td><td>问题方案探索者（分析根因）→ 方案审视者（审查）→ 技术执行者（修复）</td><td>链式</td></tr>
-    <tr><td>多方案评估</td><td>问题方案探索者 + 方案审视者 → 并行 → 任务协调者汇总</td><td>并行</td></tr>
+    <tr><td>需求分析</td><td>BA导师（分析）→ 方案审视者（验证）→ 回复</td><td>链式</td></tr>
+    <tr><td>技术方案</td><td>问题方案探索者（设计）→ 方案审视者（审查）→ 回复</td><td>链式</td></tr>
+    <tr><td>代码执行</td><td>技术执行者（执行）→ 方案审视者（抽检）→ 回复</td><td>链式</td></tr>
+    <tr><td>学习辅导</td><td>BA导师（讲解）→ 技术执行者（练习）→ BA导师（验证）</td><td>链式</td></tr>
+    <tr><td>Agent 管理</td><td>Agent管家（审查/优化/路由）→ 回复</td><td>简单</td></tr>
+    <tr><td>简单操作</td><td>主对话直接执行（不启动 Agent）</td><td>—</td></tr>
   </table>
 </div>
 
@@ -215,8 +200,7 @@
     <tr><td>问题方案探索者</td><td>主对话直接处理（不做系统性方案对比）</td></tr>
     <tr><td>方案审视者</td><td>BA导师代行审查（偏产品视角）</td></tr>
     <tr><td>技术执行者</td><td>主对话直接执行代码/命令</td></tr>
-    <tr><td>任务协调者</td><td>主对话自行判断优先级和路由</td></tr>
-    <tr><td>Agent管家</td><td>用户手动管理 Agent 生命周期</td></tr>
+    <tr><td>Agent管家</td><td>主对话手动路由 + 用户自行管理 Agent 生命周期</td></tr>
   </table>
 </div>
 
