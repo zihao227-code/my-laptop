@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(node *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(New-Item *)",
+      "Bash(Get-ChildItem *)",
+      "Bash(Start-Process *)",
+      "Bash(winget *)",
+      "Bash($env:Path *)",
+      "WebSearch(*)",
+      "WebFetch(*)"
+    ]
+  }
+}

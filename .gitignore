@@ -1,0 +1,17 @@
+# VS Code
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Secrets & credentials
+.claude/mcp.json
+
+# Temp files
+*.tmp
+~$*
