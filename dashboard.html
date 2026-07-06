@@ -216,7 +216,7 @@
 <!-- Header -->
 <div class="header">
   <h1>🧠 AI Coding 学习仪表盘</h1>
-  <p class="subtitle">BA → AI PM 转型路线 · 长期愿景：一人公司 · 上次更新：2026-07-06 13:29</p>
+  <p class="subtitle">BA → AI PM 转型路线 · 长期愿景：一人公司 · 上次更新：2026-07-06 15:20</p>
 </div>
 
 <!-- Stats -->
@@ -226,15 +226,15 @@
     <div class="label">总阶段</div>
   </div>
   <div class="stat-card">
-    <div class="number" style="color:#3fb950">1</div>
-    <div class="label">进行中</div>
+    <div class="number" style="color:#3fb950">2</div>
+    <div class="label">已完成</div>
   </div>
   <div class="stat-card">
-    <div class="number">5</div>
+    <div class="number">9</div>
     <div class="label">已完成课时</div>
   </div>
   <div class="stat-card">
-    <div class="number">12</div>
+    <div class="number">6</div>
     <div class="label">剩余课时</div>
   </div>
 </div>
@@ -325,42 +325,57 @@
       <h2>Phase 2：Prompt Engineering（提示词工程） ⭐ 重点阶段</h2>
       <p>学会写好提示词，精准控制 AI 输出——这是 AI Coding 最重要的基本功。含 6 个主题 + 3 个 BA 实战练习</p>
     </div>
-    <span class="phase-badge badge-active">● 进行中</span>
+    <span class="phase-badge badge-done">✓ 已完成</span>
   </div>
   <div class="phase-body">
     <ul class="topic-list">
-      <li class="topic-item">
-        <span class="topic-check"></span>
-        <span class="topic-label">Prompt 基础 — 好 Prompt 的要素</span>
+      <li class="topic-item done">
+        <span class="topic-check">✓</span>
+        <span class="topic-label">Prompt 基础 — 好 Prompt 的要素（四要素：角色/上下文/格式/约束）</span>
         <span class="tag tag-priority">核心</span>
       </li>
-      <li class="topic-item">
-        <span class="topic-check"></span>
+      <li class="topic-item done">
+        <span class="topic-check">✓</span>
         <span class="topic-label">Prompt 模式 — 角色扮演 / 分步推理 / 格式化输出</span>
         <span class="tag tag-priority">核心</span>
       </li>
-      <li class="topic-item">
-        <span class="topic-check"></span>
-        <span class="topic-label">迭代优化 — 如何调试和改进 Prompt</span>
+      <li class="topic-item done">
+        <span class="topic-check">✓</span>
+        <span class="topic-label">迭代优化 — 如何调试和改进 Prompt（Discovery → Plan → 模块规格）</span>
         <span class="tag tag-priority">核心</span>
       </li>
-      <li class="topic-item">
-        <span class="topic-check"></span>
-        <span class="topic-label">BA 实战 — 用 AI 写用户故事 & 验收标准</span>
+      <li class="topic-item done">
+        <span class="topic-check">✓</span>
+        <span class="topic-label">
+          BA 实战 — 用 AI 写用户故事 & 验收标准
+          <span style="color:var(--muted);font-size:12px"> — 教育培训平台 Discovery / Plan / Module Spec</span>
+        </span>
         <span class="tag tag-priority">核心</span>
       </li>
-      <li class="topic-item">
-        <span class="topic-check"></span>
-        <span class="topic-label">BA 实战 — 用 AI 分析需求文档</span>
+      <li class="topic-item done">
+        <span class="topic-check">✓</span>
+        <span class="topic-label">
+          BA 实战 — 用 AI 分析需求文档 & 架构设计
+          <span style="color:var(--muted);font-size:12px"> — 数据模型、模块契约、业务规则</span>
+        </span>
         <span class="tag tag-core">实践</span>
       </li>
-      <li class="topic-item">
-        <span class="topic-check"></span>
-        <span class="topic-label">BA 实战 — 用 AI 生成流程图/时序图</span>
+      <li class="topic-item done">
+        <span class="topic-check">✓</span>
+        <span class="topic-label">
+          BA 实战 — 用 AI 生成流程图/时序图（Mermaid）
+          <span style="color:var(--muted);font-size:12px"> — 课程发布流程图已生成</span>
+        </span>
         <span class="tag tag-core">实践</span>
+      </li>
+      <li style="margin-top:8px;padding-top:8px;border-top:1px solid #30363d;font-size:13px;color:var(--green)">
+        🛠 实战项目：教育培训平台 · P0 课程管理模块 — <strong>已交付</strong>（含测试 & Bug修复）
+      </li>
+      <li style="font-size:13px;color:var(--muted)">
+        📋 新技能：验收测试思维 — 测试清单 / 边界验证 / 回归验证
       </li>
     </ul>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill fill-2" style="width:0%"></div></div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill fill-2" style="width:100%"></div></div>
   </div>
 </div>
 
@@ -372,18 +387,21 @@
       <h2>Phase 3：AI 辅助编程实战</h2>
       <p>从 HTML/CSS 入门到用 AI 搭建可交互的原型 Demo</p>
     </div>
-    <span class="phase-badge badge-next">待开始</span>
+    <span class="phase-badge badge-active">● 进行中</span>
   </div>
   <div class="phase-body">
     <ul class="topic-list">
-      <li class="topic-item">
-        <span class="topic-check"></span>
-        <span class="topic-label">编程基础 — 前端/后端/API/数据库 是什么</span>
+      <li class="topic-item done">
+        <span class="topic-check">✓</span>
+        <span class="topic-label">编程基础 — 前端/后端/API/数据库 是什么（BA视角类比）</span>
         <span class="tag tag-core">基础</span>
       </li>
-      <li class="topic-item">
-        <span class="topic-check"></span>
-        <span class="topic-label">HTML/CSS/JavaScript 速览</span>
+      <li class="topic-item done">
+        <span class="topic-check">✓</span>
+        <span class="topic-label">
+          HTML/CSS/JavaScript 速览
+          <span style="color:var(--muted);font-size:12px"> — 骨架/外观/行为 三分法</span>
+        </span>
         <span class="tag tag-core">基础</span>
       </li>
       <li class="topic-item">
@@ -407,7 +425,7 @@
         <span class="tag tag-soon">实战</span>
       </li>
     </ul>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill fill-3" style="width:0%"></div></div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill fill-3" style="width:33%"></div></div>
   </div>
 </div>
 

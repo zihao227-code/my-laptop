@@ -173,7 +173,7 @@ function getDefaultCourses() {
     { course_id:'C002', title:'Java 后端开发训练营', description:'Spring Boot + MyBatis 全栈实战', cover:null,
       type:'offline', tags:['java','backend'], trainer_ids:['T002'],
       schedule:[{date:'2026-08-01', time:'14:00-17:00'}],
-      price_original:5000, status:'draft', version:1, archived:false, created_at:'2026-07-03', updated_at:'2026-07-03' },
+      price_original:5000, status:'published', version:1, archived:false, created_at:'2026-07-03', updated_at:'2026-07-03' },
     { course_id:'C003', title:'AI 产品经理入门', description:'从需求到上线，AI PM 全流程', cover:null,
       type:'hybrid', tags:['ai','pm','beginner'], trainer_ids:['T004'],
       schedule:[{date:'2026-07-20', time:'10:00-12:00'},{date:'2026-07-21', time:'10:00-12:00'},{date:'2026-07-22', time:'10:00-12:00'}],
@@ -248,7 +248,7 @@ function render() {
 
 // ===== Listing =====
 function renderListing() {
-  let filtered = courses.filter(c => !c.archived);
+  let filtered = courses.filter(c => !c.archived && c.status !== 'draft');
   if (listSearch) {
     const q = listSearch.toLowerCase();
     filtered = filtered.filter(c => c.title.toLowerCase().includes(q) || (c.description||'').toLowerCase().includes(q));
@@ -276,7 +276,6 @@ function renderListing() {
     <input type="text" placeholder="🔍 搜索课程名称或描述..." value="${listSearch}" oninput="listSearch=this.value;listPage=1;renderListing()">
     <select onchange="listFilterStatus=this.value;listPage=1;renderListing()">
       <option value="">全部状态</option>
-      <option value="draft" ${listFilterStatus==='draft'?'selected':''}>草稿</option>
       <option value="published" ${listFilterStatus==='published'?'selected':''}>已发布</option>
       <option value="in_progress" ${listFilterStatus==='in_progress'?'selected':''}>进行中</option>
       <option value="completed" ${listFilterStatus==='completed'?'selected':''}>已完成</option>
@@ -530,7 +529,7 @@ function renderForm(title, showVersion) {
       }).join('')}
     </div>
     ${(v.trainer_ids||[]).length===0 ? '<div style="font-size:12px;color:var(--muted);margin-top:4px">⚠ 请至少关联一位老师</div>' : ''}
-    ${(v.trainer_ids||[]).length===0 ? '<div class="err-msg" id="teacherErr" style="display:none">请至少关联一位老师</div>' : ''}
+    <div class="err-msg" id="teacherErr" style="display:none">请至少关联一位老师</div>
 
     <div class="form-actions">
       <button class="btn btn-outline" onclick="saveDraft()">💾 Save as Draft</button>
@@ -574,6 +573,7 @@ function uploadCover(input) {
 }
 
 function addSchedule() {
+  collectForm();  // 先同步用户已填内容，避免 render 重建时丢失
   (formData.schedule = formData.schedule || []).push({date:'',time:''});
   render();
 }
@@ -583,15 +583,14 @@ function updateSchedule(i, field, value) {
 }
 
 function deleteSchedule(i) {
+  collectForm();  // 先同步用户已填内容
   const s = formData.schedule[i];
-  // 简化：新建/草稿课程直接删除，已发布课程模拟分阶段判断
   const isNew = !editTargetId || (courses.find(c=>c.course_id===editTargetId)?.status==='draft');
   if (isNew) {
     formData.schedule.splice(i,1);
     toast('排期已删除', 'success');
   } else {
-    // 模拟：检查是否有报名（简化处理：标记为软删除）
-    const hasEnrollment = Math.random() > 0.5; // 模拟数据
+    const hasEnrollment = Math.random() > 0.5;
     const hasAttended = hasEnrollment && Math.random() > 0.5;
     if (hasAttended) {
       toast('⚠ 该排期已有人上课，不允许删除', 'error');
@@ -614,6 +613,7 @@ function deleteSchedule(i) {
 function addTeacher() {
   const sel = document.getElementById('fTeacherSelect');
   if (!sel.value) return;
+  collectForm();  // 先同步用户已填内容，避免 render 重建时丢失
   (formData.trainer_ids = formData.trainer_ids || []).push(sel.value);
   render();
 }
@@ -624,6 +624,7 @@ function removeTeacher(id) {
     toast('⚠ 必须至少保留一位老师。如需更换，请先添加新老师再移除旧老师', 'error');
     return;
   }
+  collectForm();  // 先同步用户已填内容，避免 render 重建时丢失
   formData.trainer_ids = existing.filter(x => x !== id);
   render();
 }
@@ -656,6 +657,9 @@ function validateForm() {
     valid = false;
     const err = document.getElementById('teacherErr');
     if (err) err.style.display = 'block';
+  } else {
+    const err = document.getElementById('teacherErr');
+    if (err) err.style.display = 'none';
   }
 
   if (!valid) toast('请完善必填项后再发布', 'error');
@@ -759,7 +763,7 @@ function toggleSelect(id, cb) {
 }
 
 function getPageItems() {
-  let filtered = courses.filter(c => !c.archived);
+  let filtered = courses.filter(c => !c.archived && c.status !== 'draft');
   if (listSearch) {
     const q = listSearch.toLowerCase();
     filtered = filtered.filter(c => c.title.toLowerCase().includes(q) || (c.description||'').toLowerCase().includes(q));

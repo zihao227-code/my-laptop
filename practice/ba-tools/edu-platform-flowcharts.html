@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教育培训平台 · 流程图</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #f8f9fa; --card: #fff; --border: #dee2e6; --text: #212529; --muted: #6c757d;
+    --editor: #cfe2ff; --editor-stroke: #0d6efd;
+    --learner: #d1e7dd; --learner-stroke: #198754;
+    --trainer: #fce4d6; --trainer-stroke: #e67e22;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 32px; max-width: 1300px; margin: 0 auto; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+
+  .section { margin-bottom: 56px; }
+  .section h2 { font-size: 18px; padding: 8px 0; border-bottom: 2px solid var(--border); margin-bottom: 8px; }
+  .section .desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.8; }
+
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin-bottom: 16px; }
+  .card h3 { font-size: 15px; margin-bottom: 4px; }
+  .card .note { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .mermaid { display: flex; justify-content: center; }
+
+  /* ===== Swimlane Legend ===== */
+  .legend { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 6px 14px; border-radius: 20px; font-weight: 600; }
+  .legend-editor { background: var(--editor); border: 2px solid var(--editor-stroke); }
+  .legend-learner { background: var(--learner); border: 2px solid var(--learner-stroke); }
+  .legend-trainer { background: var(--trainer); border: 2px solid var(--trainer-stroke); }
+
+  /* ===== Module Tag ===== */
+  .mod-tag { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 8px; margin-left: 4px; font-weight: 700; }
+  .mod-course   { background: #cfe2ff; color: #0d6efd; }
+  .mod-funding  { background: #fff3cd; color: #b8860b; }
+  .mod-order    { background: #f8d7da; color: #dc3545; }
+  .mod-payment  { background: #f8d7da; color: #dc3545; }
+  .mod-website  { background: #d1e7dd; color: #198754; }
+  .mod-class    { background: #e8daef; color: #8e44ad; }
+  .mod-exam     { background: #e8daef; color: #8e44ad; }
+  .mod-message  { background: #e2e3e5; color: #495057; }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+
+  /* HTML Swimlane Table */
+  .swimlane-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 24px; }
+  .swimlane-table th { padding: 8px 14px; text-align: left; font-size: 12px; font-weight: 700; border-bottom: 2px solid var(--border); }
+  .swimlane-table td { padding: 10px 14px; vertical-align: top; border-bottom: 1px solid #f1f3f4; }
+  .swimlane-table .lane-editor { border-left: 4px solid var(--editor-stroke); }
+  .swimlane-table .lane-learner { border-left: 4px solid var(--learner-stroke); }
+  .swimlane-table .lane-trainer { border-left: 4px solid var(--trainer-stroke); }
+  .step-num { display: inline-block; width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 22px; font-size: 11px; font-weight: 700; color: #fff; margin-right: 8px; flex-shrink: 0; }
+  .step-editor { background: var(--editor-stroke); }
+  .step-learner { background: var(--learner-stroke); }
+  .step-trainer { background: var(--trainer-stroke); }
+  .arrow-cell { text-align: center; color: var(--muted); font-size: 18px; padding: 4px 0; }
+  .phase-label { font-weight: 700; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<h1>📊 教育培训平台 · 业务流程图</h1>
+<p class="subtitle">泳道图 — 按角色分栏，标注模块归属 · 2026-07-06</p>
+
+<!-- Legend -->
+<div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+  <span style="font-size:13px;color:var(--muted)">泳道颜色：</span>
+  <span class="legend-item legend-editor">🧑‍💼 Editor（后台管理）</span>
+  <span class="legend-item legend-learner">🧑‍🎓 Learner（学员端）</span>
+  <span class="legend-item legend-trainer">👨‍🏫 Trainer（教师端）</span>
+</div>
+
+<div style="display:flex;gap:12px;align-items:center;margin-bottom:32px">
+  <span style="font-size:13px;color:var(--muted)">模块标签：</span>
+  <span class="mod-tag mod-course">课程管理</span>
+  <span class="mod-tag mod-funding">Funding</span>
+  <span class="mod-tag mod-website">官网</span>
+  <span class="mod-tag mod-order">订单</span>
+  <span class="mod-tag mod-payment">支付</span>
+  <span class="mod-tag mod-class">上课</span>
+  <span class="mod-tag mod-exam">考试</span>
+  <span class="mod-tag mod-message">消息</span>
+</div>
+
+<!-- ========== 1. Mermaid 泳道图 ========== -->
+<div class="section">
+  <h2>一、主业务流程泳道图（Mermaid）</h2>
+  <div class="desc">
+    <strong>泳道 = 角色</strong>（Editor / Learner / Trainer）。纵轴 = 时间顺序。跨泳道的箭头 = 跨角色的数据/状态传递。<br>
+    每个节点标注了 <span class="mod-tag mod-course">所属模块</span>，从创建课程到考试出分的完整链路。
+  </div>
+
+  <div class="card">
+    <h3>📋 完整业务链路 — 从课程创建到考试出分</h3>
+    <div class="note">7 个模块 × 3 个角色 × 1 条主链路。虚线 = 模块间的数据/状态传递（非角色动作）</div>
+    <div class="mermaid">
+flowchart TB
+    subgraph EDITOR["🧑‍💼 Editor 泳道（后台管理）"]
+        direction TB
+        E1["① 创建课程<br/>填名称/描述/封面/类型<br/>【课程管理模块】"] --> E2["② 配置排期 + 关联老师<br/>【课程管理模块】"]
+        E2 --> E3{"③ 发布？"}
+        E3 -->|"Save as Draft"| E4["📝 保存草稿<br/>【课程管理模块】"]
+        E4 --> E2
+        E3 -->|"Publish"| E5["④ 课程状态 → Published<br/>【课程管理模块】"]
+        E5 --> E6["⑤ 配置 Funding Agreement<br/>设定条件 + 关联课程 + 金额<br/>【Funding 模块】"]
+        E6 --> E7["⑥ Funding 状态 → Active<br/>【Funding 模块】"]
+    end
+
+    subgraph LEARNER["🧑‍🎓 Learner 泳道（学员端）"]
+        direction TB
+        L1["⑦ 浏览官网课程列表<br/>按类型/标签/价格筛选<br/>【官网模块】"] --> L2["⑧ 查看课程详情 + 动态价格<br/>原价 ¥3,000 → 我的价格 ¥500<br/>【官网模块】"]
+        L2 --> L3["⑨ 点击「立即购买」<br/>【官网模块】"]
+        L3 --> L4["⑩ 创建订单<br/>锁定 course_id + price_final<br/>【订单模块】"]
+        L4 --> L5["⑪ 完成支付<br/>【支付模块】"]
+        L5 --> L6{"⑫ 支付结果？"}
+        L6 -->|"成功"| L7["⑬ 订单状态 → Paid<br/>【订单模块】"]
+        L6 -->|"失败"| L8["❌ 取消订单<br/>【订单模块】"]
+        L7 --> L9["⑭ 按时参加上课<br/>【上课系统】"]
+        L9 --> L10["⑮ 参加考试<br/>【考试系统】"]
+        L10 --> L11["⑯ 查看考试成绩<br/>【考试系统】"]
+    end
+
+    subgraph TRAINER["👨‍🏫 Trainer 泳道（教师端）"]
+        direction TB
+        T1["⑰ 查看被分配的课程<br/>【上课系统】"] --> T2["⑱ 备课 + 上传课件<br/>【上课系统】"]
+        T2 --> T3["⑲ 上课（线下/线上）<br/>【上课系统】"]
+        T3 --> T4["⑳ 批卷 / 录入成绩<br/>【考试系统】"]
+    end
+
+    E5 -.->|"课程数据同步到官网"| L1
+    E7 -.->|"Funding 影响动态价格"| L2
+    L7 -.->|"已支付 = 允许上课"| L9
+    L7 -.->|"已支付 → 通知 Trainer"| T1
+    T3 -.->|"Trainer 上课 = Learner 上课"| L9
+    T4 -.->|"成绩录入 → Learner 可查看"| L11
+
+    style EDITOR fill:#eff6ff,stroke:#0d6efd,stroke-width:2px
+    style LEARNER fill:#f0faf4,stroke:#198754,stroke-width:2px
+    style TRAINER fill:#fef6ee,stroke:#e67e22,stroke-width:2px
+    </div>
+  </div>
+</div>
+
+<!-- ========== 2. 课程管理子流程 ========== -->
+<div class="section">
+  <h2>二、P0 课程管理模块 · 详细泳道图</h2>
+  <div class="desc">
+    聚焦 <strong>Editor 在课程管理模块内的完整操作流</strong>——这是你已交付的模块。每个步骤标注了具体的 UI 操作和对应的功能编号。
+  </div>
+
+  <div class="card">
+    <h3>课堂管理 — 创建/编辑/草稿/发布 全流程</h3>
+    <div class="mermaid">
+flowchart TB
+    subgraph EDITOR_P0["🧑‍💼 Editor — 课程管理模块 P0"]
+        direction TB
+
+        A["📋 进入 Listing 页面<br/>默认入口 · 已发布课程列表<br/>【课程管理模块】"] --> B{"操作选择"}
+
+        B -->|"➕ 新增课程"| C["📝 进入创建页面<br/>表单：名称/描述/封面/类型/价格/标签<br/>【课程管理模块】"]
+        B -->|"✏️ 编辑已有课程"| D["🖊️ 自动创建变更型草稿<br/>标注「变更 C001」<br/>原课程仍对外生效<br/>【课程管理模块】"]
+        B -->|"📋 查看草稿列表"| E["📝 草稿列表<br/>区分：新建型 / 变更型<br/>【课程管理模块】"]
+
+        C --> F["📅 添加排期<br/>日期 + 时间段 · 支持多条<br/>【课程管理模块】"]
+        D --> F
+
+        F --> G["👨‍🏫 关联老师<br/>从预设老师列表选择<br/>约束：必须先替换再移除<br/>【课程管理模块】"]
+
+        G --> H{"💾 保存方式"}
+
+        H -->|"Save as Draft"| I["📝 保存为草稿<br/>✅ 不校验必填项<br/>✅ 可随时继续编辑"]
+        I --> E
+
+        H -->|"Cancel"| J["🚫 放弃编辑<br/>返回 Listing"]
+
+        H -->|"Save & Publish"| K{"🔍 必填项校验"}
+
+        K -->|"❌ 不通过"| L["🔴 红色高亮 + 提示<br/>· 课程名称必填<br/>· 价格必须 ＞ 0<br/>· 至少 1 位老师"]
+        L --> F
+
+        K -->|"✅ 通过"| M{"新建 or 变更？"}
+
+        M -->|"新建课程"| N["🆕 生成 course_id<br/>C004, C005...<br/>version = 1<br/>状态 → Published"]
+        M -->|"变更课程"| O["🔄 覆盖原课程<br/>version + 1<br/>清除关联草稿"]
+
+        N --> P["📢 课程出现在 Listing<br/>状态 = 已发布<br/>【课程管理模块】"]
+        O --> P
+
+        E --> Q["🖊️ 继续编辑草稿<br/>回到编辑表单"]
+        Q --> F
+
+        E --> R["🗑️ 删除草稿"]
+
+        P --> S["🔜 后续模块可引用<br/>Funding · 官网 · 订单"]
+    end
+
+    style EDITOR_P0 fill:#eff6ff,stroke:#0d6efd,stroke-width:2px
+    style I fill:#fff3cd,stroke:#ffc107
+    style P fill:#d4edda,stroke:#198754
+    style L fill:#f8d7da,stroke:#dc3545
+    style S fill:#e8daef,stroke:#8e44ad
+    </div>
+  </div>
+</div>
+
+<!-- ========== 3. HTML 泳道表 ========== -->
+<div class="section">
+  <h2>三、表格版泳道图（逐步骤可读）</h2>
+  <div class="desc">
+    Mermaid 适合快速出图，但<strong>给业务方看时，表格版泳道图更清晰</strong>——能逐步骤描述动作、模块、输入/输出。<br>
+    这里展示同一流程的另一种表达形式。
+  </div>
+
+  <div class="card">
+    <h3>📋 完整业务链路 · 分步泳道表</h3>
+
+    <table class="swimlane-table">
+      <thead>
+        <tr><th style="width:40px">#</th><th style="width:80px">角色</th><th style="width:140px">动作</th><th style="width:90px">所属模块</th><th>具体操作</th><th>输出 / 结果</th></tr>
+      </thead>
+      <tbody>
+
+        <!-- Phase: Course Creation -->
+        <tr><td colspan="6" class="phase-label">阶段一：课程创建 & 发布</td></tr>
+
+        <tr class="lane-editor">
+          <td><span class="step-num step-editor">1</span></td>
+          <td><strong>Editor</strong></td>
+          <td>创建课程</td>
+          <td><span class="mod-tag mod-course">课程管理</span></td>
+          <td>点击「新增课程」→ 填写基础信息：名称、描述、封面图、上课方式(online/offline/hybrid)、原价、标签</td>
+          <td>课程基本信息对象</td>
+        </tr>
+        <tr class="lane-editor">
+          <td><span class="step-num step-editor">2</span></td>
+          <td><strong>Editor</strong></td>
+          <td>配置排期</td>
+          <td><span class="mod-tag mod-course">课程管理</span></td>
+          <td>添加多条上课时间（日期 + 时间段），支持增删</td>
+          <td>schedule[] 数组</td>
+        </tr>
+        <tr class="lane-editor">
+          <td><span class="step-num step-editor">3</span></td>
+          <td><strong>Editor</strong></td>
+          <td>关联老师</td>
+          <td><span class="mod-tag mod-course">课程管理</span></td>
+          <td>从预设老师列表选择 → 可关联多位。约束：必须「先替换再移除」，不能从有变无</td>
+          <td>trainer_ids[] 数组</td>
+        </tr>
+        <tr class="lane-editor">
+          <td><span class="step-num step-editor">4</span></td>
+          <td><strong>Editor</strong></td>
+          <td>发布课程</td>
+          <td><span class="mod-tag mod-course">课程管理</span></td>
+          <td>点击「Save & Publish」→ 自动校验必填项 → 通过后 status → "published" → 生成 course_id</td>
+          <td>course_id、status=published</td>
+        </tr>
+
+        <tr><td colspan="6" class="arrow-cell">⬇ 课程已发布，可被其他模块引用 ⬇</td></tr>
+
+        <!-- Phase: Funding -->
+        <tr><td colspan="6" class="phase-label">阶段二：Funding 配置（可与阶段一并行）</td></tr>
+
+        <tr class="lane-editor">
+          <td><span class="step-num step-editor">5</span></td>
+          <td><strong>Editor</strong></td>
+          <td>配置 Funding</td>
+          <td><span class="mod-tag mod-funding">Funding</span></td>
+          <td>创建 Funding Agreement → 设定资助条件 → 关联课程(course_id[]) → 填写资助金额(funding_amount) → 激活</td>
+          <td>funding_eligible=true 回写到课程</td>
+        </tr>
+
+        <tr><td colspan="6" class="arrow-cell">⬇ 课程 + Funding 就绪，官网可展示 ⬇</td></tr>
+
+        <!-- Phase: Learner Journey -->
+        <tr><td colspan="6" class="phase-label">阶段三：学员选课 & 支付</td></tr>
+
+        <tr class="lane-learner">
+          <td><span class="step-num step-learner">6</span></td>
+          <td><strong>Learner</strong></td>
+          <td>浏览选课</td>
+          <td><span class="mod-tag mod-website">官网</span></td>
+          <td>进入官网 → 按类型/标签/方向筛选课程 → 查看课程详情</td>
+          <td>课程列表、动态价格（如有Funding）</td>
+        </tr>
+        <tr class="lane-learner">
+          <td><span class="step-num step-learner">7</span></td>
+          <td><strong>Learner</strong></td>
+          <td>下单</td>
+          <td><span class="mod-tag mod-order">订单</span></td>
+          <td>点击「立即购买」→ 系统生成 order_id → 锁定 user_id + course_id + price_final（含Funding后的价格）</td>
+          <td>order_id、状态=pending</td>
+        </tr>
+        <tr class="lane-learner">
+          <td><span class="step-num step-learner">8</span></td>
+          <td><strong>Learner</strong></td>
+          <td>支付</td>
+          <td><span class="mod-tag mod-payment">支付</span></td>
+          <td>完成支付 → 成功后回写 order.status="paid" → 推送通知给 Learner 和 Trainer</td>
+          <td>order.status=paid、通知已发送</td>
+        </tr>
+
+        <tr><td colspan="6" class="arrow-cell">⬇ 支付完成 = 上课资格确认 ⬇</td></tr>
+
+        <!-- Phase: Class & Exam -->
+        <tr><td colspan="6" class="phase-label">阶段四：上课 & 考试</td></tr>
+
+        <tr class="lane-trainer">
+          <td><span class="step-num step-trainer">9</span></td>
+          <td><strong>Trainer</strong></td>
+          <td>备课</td>
+          <td><span class="mod-tag mod-class">上课系统</span></td>
+          <td>查看自己被分配的课程 → 上传课件/资料 → 准备教学内容</td>
+          <td>课件已上传</td>
+        </tr>
+        <tr class="lane-trainer">
+          <td><span class="step-num step-trainer">10</span></td>
+          <td><strong>Trainer</strong></td>
+          <td>上课</td>
+          <td><span class="mod-tag mod-class">上课系统</span></td>
+          <td>按排期时间上课（线上/线下/混合）→ 记录出勤</td>
+          <td>attendance[] 出勤记录</td>
+        </tr>
+        <tr class="lane-learner">
+          <td><span class="step-num step-learner">10</span></td>
+          <td><strong>Learner</strong></td>
+          <td>上课</td>
+          <td><span class="mod-tag mod-class">上课系统</span></td>
+          <td>按时参加上课（与 Trainer 步骤 10 同步发生）</td>
+          <td>—</td>
+        </tr>
+        <tr class="lane-trainer">
+          <td><span class="step-num step-trainer">11</span></td>
+          <td><strong>Trainer</strong></td>
+          <td>配置考试</td>
+          <td><span class="mod-tag mod-exam">考试系统</span></td>
+          <td>设置考试内容（线上/线下）、通过分数(pass_score)、考试时间</td>
+          <td>exam_id、考试配置已保存</td>
+        </tr>
+        <tr class="lane-learner">
+          <td><span class="step-num step-learner">12</span></td>
+          <td><strong>Learner</strong></td>
+          <td>参加考试</td>
+          <td><span class="mod-tag mod-exam">考试系统</span></td>
+          <td>参加考试 → 线上直接作答 / 线下成绩后录入（标记 source="offline_entry"）</td>
+          <td>score_id、考试成绩</td>
+        </tr>
+        <tr class="lane-learner">
+          <td><span class="step-num step-learner">13</span></td>
+          <td><strong>Learner</strong></td>
+          <td>查看成绩</td>
+          <td><span class="mod-tag mod-exam">考试系统</span></td>
+          <td>考试结果公布后 → Learner 可查看自己的成绩 → 系统推送通知</td>
+          <td>成绩单、通知已发送</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ========== 4. 对比总结 ========== -->
+<div class="section">
+  <h2>📌 泳道图 vs 普通流程图</h2>
+
+  <div class="compare">
+    <div class="card">
+      <h3>普通流程图</h3>
+      <div class="note">之前画的版本</div>
+      <ul style="font-size:13px;color:var(--muted);line-height:2;padding-left:18px">
+        <li>❌ 不区分角色 → 看不出"谁做什么"</li>
+        <li>❌ 不标注模块 → 开发和 BA 之间有误解</li>
+        <li>✅ 适合简单的、单角色的步骤流</li>
+        <li>✅ 画起来快</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>泳道图（本次画的）</h3>
+      <div class="note">你现在看到的这个版本</div>
+      <ul style="font-size:13px;color:var(--muted);line-height:2;padding-left:18px">
+        <li>✅ <strong>横轴 = 角色</strong>：谁负责这一段一目了然</li>
+        <li>✅ <strong>标注模块</strong>：每个动作归属于哪个系统模块</li>
+        <li>✅ <strong>跨泳道箭头</strong>：角色间的交接点——这是最容易出 Bug 的地方</li>
+        <li>✅ 适合多角色协作的业务流程</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤖 AI Prompt 模板：一步生成泳道图</h3>
+    <pre style="background:#f1f3f4;padding:16px;border-radius:8px;font-size:13px;overflow-x:auto;line-height:1.6">
+用 mermaid flowchart 画一个泳道图（用 subgraph 分角色）：
+- <strong>角色1 [名称]</strong>：步骤1 → 步骤2 → ...
+- <strong>角色2 [名称]</strong>：步骤3 → 步骤4 → ...
+- <strong>角色3 [名称]</strong>：步骤5 → 步骤6 → ...
+
+要求：
+1. 每个节点标注所属模块（用括号注明）
+2. 跨角色的数据传递用虚线箭头
+3. 分支判断用菱形节点
+4. 使用不同颜色区分角色泳道</pre>
+  </div>
+</div>
+
+<script>
+mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>

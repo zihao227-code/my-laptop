@@ -1,0 +1,2 @@
+- [一人公司长期愿景](.claude/memory/long-term-vision.md) — 用户希望通过 AI + Coding 实现一人公司全链路能力
+- [多电脑同步方案](.claude/memory/home-computer-sync.md) — 公司/家里电脑通过 GitHub 保持学习环境同步
