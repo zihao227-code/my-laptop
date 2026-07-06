@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 监控仪表盘</title>
+<style>
+  :root {
+    --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --muted:#8b949e;
+    --accent:#58a6ff; --green:#3fb950; --orange:#d2991d; --purple:#a371f7; --red:#f85149;
+    --c-ba:#58a6ff; --c-ps:#3fb950; --c-sr:#d2991d; --c-am:#a371f7; --c-te:#f0883e; --c-tc:#79c0ff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:24px;max-width:1100px;margin:0 auto}
+  .header{text-align:center;margin-bottom:28px;padding:28px 0 20px;border-bottom:1px solid var(--border)}
+  .header h1{font-size:26px;font-weight:700}
+  .header .sub{color:var(--muted);font-size:13px;margin-top:4px}
+
+  /* Grid */
+  .agent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+
+  .agent-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  .agent-card .bar{height:3px}
+  .bar-ba{background:var(--c-ba)}.bar-ps{background:var(--c-ps)}.bar-sr{background:var(--c-sr)}
+  .bar-am{background:var(--c-am)}.bar-te{background:var(--c-te)}.bar-tc{background:var(--c-tc)}
+  .agent-card .body{padding:14px 16px}
+  .agent-card h3{font-size:15px;margin-bottom:2px}
+  .agent-card .file{font-size:11px;color:var(--muted);margin-bottom:8px}
+  .agent-card .desc{font-size:13px;color:var(--text);margin-bottom:10px;line-height:1.4}
+  .agent-card .tags{display:flex;flex-wrap:wrap;gap:6px}
+
+  .tag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;text-transform:uppercase}
+  .tag-active{background:#1a3c2a;color:var(--green)}
+  .tag-core{background:#1a3a5c;color:var(--accent)}
+  .tag-exec{background:#3d2e0f;color:var(--orange)}
+
+  .badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 10px;border-radius:12px;margin-bottom:8px}
+  .badge-ok{background:#1a3c2a;color:var(--green)}
+  .badge-warn{background:#3d2e0f;color:var(--orange)}
+
+  /* Sections */
+  .section{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
+  .section h2{font-size:16px;margin-bottom:12px}
+
+  /* Topology */
+  .topo{display:flex;flex-direction:column;align-items:center;gap:10px;font-size:13px;padding:12px 0}
+  .topo-row{display:flex;gap:14px;align-items:center}
+  .topo-box{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;text-align:center;min-width:100px}
+  .topo-user{background:#1c2333;border:1px solid var(--border)}
+  .topo-tc{background:#0d2137;border:1px solid var(--c-tc)}
+  .topo-ba{background:#0d2137;border:1px solid var(--c-ba)}
+  .topo-ps{background:#0d2818;border:1px solid var(--c-ps)}
+  .topo-sr{background:#281e0a;border:1px solid var(--c-sr)}
+  .topo-te{background:#281a0a;border:1px solid var(--c-te)}
+  .topo-am{background:#1a0f2e;border:1px solid var(--c-am)}
+  .topo-arr{color:var(--muted);font-size:18px}
+
+  /* Matrix */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-weight:600;font-size:11px}
+  td .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+  .dot-yes{background:var(--green)}.dot-maybe{background:var(--orange)}.dot-no{background:var(--border)}
+
+  /* Issues */
+  .issue{padding:8px 12px;border-radius:6px;margin-bottom:6px;font-size:13px}
+  .issue-warn{background:#3d2e0f;border-left:3px solid var(--orange)}
+  .issue-ok{background:#1a3c2a;border-left:3px solid var(--green)}
+
+  .footer{text-align:center;margin-top:24px;padding:14px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤖 Agent 生态监控仪表盘</h1>
+  <p class="sub">6 个 Agent · 上次更新：2026-07-06 · 由 Agent管家 管理</p>
+</div>
+
+<!-- Agent Grid -->
+<div class="agent-grid">
+
+  <!-- BA导师 -->
+  <div class="agent-card">
+    <div class="bar bar-ba"></div>
+    <div class="body">
+      <span class="badge badge-ok">● 活跃</span>
+      <h3>🎓 BA导师</h3>
+      <div class="file">ba-mentor.md</div>
+      <div class="desc">10年经验 BA+PM，辅导需求分析、产品思维、AI PM 转型</div>
+      <div class="tags">
+        <span class="tag tag-core">需求</span><span class="tag tag-core">产品</span><span class="tag tag-core">教学</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 问题解决方案探索者 -->
+  <div class="agent-card">
+    <div class="bar bar-ps"></div>
+    <div class="body">
+      <span class="badge badge-ok">● 活跃</span>
+      <h3>🔍 问题解决方案探索者</h3>
+      <div class="file">problem-solver.md</div>
+      <div class="desc">系统性方案设计——先搜索、多方案对比、推荐最优解</div>
+      <div class="tags">
+        <span class="tag tag-core">技术方案</span><span class="tag tag-core">搜索调研</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 方案审视者 -->
+  <div class="agent-card">
+    <div class="bar bar-sr"></div>
+    <div class="body">
+      <span class="badge badge-ok">● 活跃</span>
+      <h3>🛡️ 方案审视者</h3>
+      <div class="file">solution-reviewer.md</div>
+      <div class="desc">审查执行方式——是否在修根因？有没有更优解？防止点状修bug</div>
+      <div class="tags">
+        <span class="tag tag-core">审查</span><span class="tag tag-core">根因分析</span><span class="tag tag-core">质量</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent管家 -->
+  <div class="agent-card">
+    <div class="bar bar-am"></div>
+    <div class="body">
+      <span class="badge badge-ok">● 活跃</span>
+      <h3>🏗️ Agent管家</h3>
+      <div class="file">agent-manager.md</div>
+      <div class="desc">全局管控——审视、路由、优化、合并、解耦所有 Agent</div>
+      <div class="tags">
+        <span class="tag tag-core">元管理</span><span class="tag tag-core">路由</span><span class="tag tag-core">优化</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 技术执行者 -->
+  <div class="agent-card">
+    <div class="bar bar-te"></div>
+    <div class="body">
+      <span class="badge badge-ok">● 活跃</span>
+      <h3>⚙️ 技术执行者</h3>
+      <div class="file">tech-executor.md</div>
+      <div class="desc">后台执行代码编写、安装配置、测试验证，不参与需求讨论</div>
+      <div class="tags">
+        <span class="tag tag-exec">执行</span><span class="tag tag-exec">代码</span><span class="tag tag-exec">验证</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 任务协调者 -->
+  <div class="agent-card">
+    <div class="bar bar-tc"></div>
+    <div class="body">
+      <span class="badge badge-ok">● 活跃</span>
+      <h3>📋 任务协调者</h3>
+      <div class="file">task-coordinator.md</div>
+      <div class="desc">用户桥梁——状态感知、优先级排序、跨Agent沟通、进度同步</div>
+      <div class="tags">
+        <span class="tag tag-core">协调</span><span class="tag tag-core">优先级</span><span class="tag tag-core">沟通</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Network Topology -->
+<div class="section">
+  <h2>🔗 Agent 协作网络</h2>
+  <div class="topo">
+    <div class="topo-row">
+      <div class="topo-box topo-user">👤 用户</div>
+    </div>
+    <div class="topo-arr">▼</div>
+    <div class="topo-row">
+      <div class="topo-box topo-tc">📋 任务协调者<br><small>入口 & 调度</small></div>
+      <div class="topo-box topo-am">🏗️ Agent管家<br><small>元管理 & 路由</small></div>
+    </div>
+    <div class="topo-arr">▼</div>
+    <div class="topo-row">
+      <div class="topo-box topo-ba">🎓 BA导师<br><small>需求/产品</small></div>
+      <div class="topo-box topo-ps">🔍 问题方案探索者<br><small>方案设计</small></div>
+      <div class="topo-box topo-te">⚙️ 技术执行者<br><small>代码/安装</small></div>
+    </div>
+    <div class="topo-arr">▼</div>
+    <div class="topo-row">
+      <div class="topo-box topo-sr">🛡️ 方案审视者<br><small>审查 & 验证</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- Collaboration Matrix -->
+<div class="section">
+  <h2>📊 协作矩阵（谁和谁配合）</h2>
+  <table>
+    <tr><th>场景</th><th>Agent 链</th><th>模式</th></tr>
+    <tr><td>需求分析</td><td>任务协调者 → BA导师 → 方案审视者 → 回复</td><td>链式</td></tr>
+    <tr><td>技术问题</td><td>任务协调者 → 问题方案探索者 → 方案审视者 → 技术执行者</td><td>链式</td></tr>
+    <tr><td>学习辅导</td><td>任务协调者 → BA导师 → 回复</td><td>简单</td></tr>
+    <tr><td>代码/安装</td><td>任务协调者 → 技术执行者 → 验证</td><td>简单</td></tr>
+    <tr><td>Agent 管理</td><td>任务协调者 → Agent管家 → 回复</td><td>简单</td></tr>
+    <tr><td>Bug 修复</td><td>问题方案探索者（分析根因）→ 方案审视者（审查）→ 技术执行者（修复）</td><td>链式</td></tr>
+    <tr><td>多方案评估</td><td>问题方案探索者 + 方案审视者 → 并行 → 任务协调者汇总</td><td>并行</td></tr>
+  </table>
+</div>
+
+<!-- Degradation -->
+<div class="section">
+  <h2>🔄 降级方案（Agent 缺失时）</h2>
+  <table>
+    <tr><th>缺失 Agent</th><th>降级方案</th></tr>
+    <tr><td>BA导师</td><td>问题方案探索者代行（功能缩减，偏技术视角）</td></tr>
+    <tr><td>问题方案探索者</td><td>主对话直接处理（不做系统性方案对比）</td></tr>
+    <tr><td>方案审视者</td><td>BA导师代行审查（偏产品视角）</td></tr>
+    <tr><td>技术执行者</td><td>主对话直接执行代码/命令</td></tr>
+    <tr><td>任务协调者</td><td>主对话自行判断优先级和路由</td></tr>
+    <tr><td>Agent管家</td><td>用户手动管理 Agent 生命周期</td></tr>
+  </table>
+</div>
+
+<!-- Health Check -->
+<div class="section">
+  <h2>📈 健康度检查</h2>
+  <div class="issue issue-ok">✅ 6 个 Agent 全部活跃，职责边界清晰</div>
+  <div class="issue issue-ok">✅ 协作链路完整——入口(协调者) → 执行(BA/方案/技术) → 审查(审视者)</div>
+  <div class="issue issue-ok">✅ 降级方案覆盖所有 Agent，无硬依赖</div>
+  <div class="issue issue-warn">⚠ Agent管家 和 任务协调者 在"路由"职责上有轻度重叠（~20%），可控</div>
+  <div class="issue issue-warn">⚠ 6 个 Agent 已接近上限（推荐 ≤8），后续创建需谨慎</div>
+</div>
+
+<div class="footer">
+  <p>💡 提示：在 VS Code 中右键 agent-dashboard.html → "Open Preview" 预览</p>
+  <p>此仪表盘由 Agent管家 维护，每次 Agent 变更后自动更新</p>
+</div>
+
+</body>
+</html>

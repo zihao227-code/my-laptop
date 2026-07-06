@@ -12,6 +12,7 @@ desktop.ini
 # Secrets & credentials
 .claude/mcp.json
 .claude/settings.local.json
+.mcp.json
 
 # Temp files
 *.tmp
