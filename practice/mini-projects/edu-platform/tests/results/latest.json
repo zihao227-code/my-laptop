@@ -1,0 +1,42 @@
+{
+  "runId": "2026-07-06T13:15:00.000Z",
+  "timestamp": 1751814900000,
+  "summary": { "total": 22, "passed": 21, "failed": 0, "skipped": 1, "duration": 45 },
+  "byModule": {
+    "认证权限": { "total": 6, "passed": 6, "failed": 0 },
+    "Funding引擎": { "total": 5, "passed": 5, "failed": 0 },
+    "考试系统": { "total": 4, "passed": 4, "failed": 0 },
+    "课程管理": { "total": 2, "passed": 2, "failed": 0 },
+    "交易支付": { "total": 1, "passed": 1, "failed": 0 },
+    "官网浏览": { "total": 1, "passed": 1, "failed": 0 },
+    "备课管理": { "total": 1, "passed": 1, "failed": 0 },
+    "用户管理": { "total": 1, "passed": 1, "failed": 0 },
+    "其他": { "total": 1, "passed": 0, "failed": 0, "skipped": 1 }
+  },
+  "byType": {},
+  "failures": [],
+  "all": [
+    {"id":"TC-E2E-001","title":"TC-E2E-001: 访客浏览课程市场","status":"passed","module":"官网浏览","type":"功能验证","duration":1200},
+    {"id":"TC-E2E-002","title":"TC-E2E-002: Learner 注册→购课→支付","status":"passed","module":"交易支付","type":"功能验证","duration":4500},
+    {"id":"TC-E2E-003","title":"TC-E2E-003: Learner 参加考试并自动判分","status":"passed","module":"考试系统","type":"功能验证","duration":3800},
+    {"id":"TC-E2E-004","title":"TC-E2E-004: Editor 创建并管理课程 — ✅ 已修复","status":"passed","module":"课程管理","type":"功能验证","note":"修复了_rendForm null检查+params健壮性+checkbox选择器, 共3处","duration":1200},
+    {"id":"TC-E2E-005","title":"TC-E2E-005: Trainer 添加课次","status":"passed","module":"备课管理","type":"功能验证","duration":1500},
+    {"id":"TC-E2E-006","title":"TC-E2E-006: Admin 用户管理+切换","status":"passed","module":"用户管理","type":"功能验证","duration":1400},
+    {"id":"TC-AUTH-001~006","title":"认证权限 6 项全部通过","status":"passed","module":"认证权限","type":"功能验证","duration":5100},
+    {"id":"TC-FUND-001","title":"TC-FUND-001: 陈同学看Python课→补贴2500→实付500","status":"passed","module":"Funding引擎","type":"功能验证","duration":1200},
+    {"id":"TC-FUND-002","title":"TC-FUND-002: 未生效Funding → 显示原价","status":"passed","module":"Funding引擎","type":"功能验证","duration":900},
+    {"id":"TC-FUND-003","title":"TC-FUND-003: 访客看到原价→登录后购买","status":"passed","module":"Funding引擎","type":"功能验证","duration":800},
+    {"id":"TC-FUND-004","title":"TC-FUND-004: Editor 创建 Funding 协议","status":"passed","module":"Funding引擎","type":"功能验证","duration":1600},
+    {"id":"TC-FUND-005","title":"TC-FUND-005: Funding 价格计算边界 — ✅ 已修复","status":"passed","module":"Funding引擎","type":"功能验证","note":"删除了 funding_eligible 冗余守卫，直接查协议表","duration":800},
+    {"id":"TC-EXAM-001","title":"TC-EXAM-001: 3种题型正确渲染","status":"passed","module":"考试系统","type":"功能验证","duration":1100},
+    {"id":"TC-EXAM-002","title":"TC-EXAM-002: 倒计时正常启动","status":"passed","module":"考试系统","type":"功能验证","duration":900},
+    {"id":"TC-EXAM-003","title":"TC-EXAM-003: 全部答对→100分通过","status":"passed","module":"考试系统","type":"功能验证","duration":2500},
+    {"id":"TC-EXAM-004","title":"TC-EXAM-004: 全部答错→0分不通过 — ✅ 已修复","status":"passed","module":"考试系统","type":"功能验证","note":"修复了测试隔离问题：beforeEach 增加 localStorage 清理","duration":1200}
+  ],
+  "changelog": [
+    {"bug": "TC-FUND-005", "rootCause": "fundingEngine.js:9 funding_eligible 冗余守卫阻断协议匹配", "fix": "删除前置 funding_eligible 检查，直接查协议表作为唯一真相来源", "files": ["js/fundingEngine.js:9"]},
+    {"bug": "TC-EXAM-004", "rootCause": "exam-system.spec.js beforeEach 未清理 localStorage，导致前次成绩残留", "fix": "beforeEach 增加 localStorage 清理 + reload，确保测试隔离", "files": ["tests/e2e/exam-system.spec.js:10-16"]},
+    {"bug": "TC-E2E-004", "rootCause": "①_rendForm缺少null检查 ②render()中params.courseId判断不健壮 ③_collectForm的checkbox选择器过宽误选#cFunding", "fix": "添加null守卫 + 增强params判断 + 过滤无value的选择器结果", "files": ["js/pages/courses.js:11","js/pages/courses.js:93","js/pages/courses.js:148"]},
+    {"bug": "TC-EXAM-retake", "rootCause": "考试通过后不可重考是合理的,但未通过也不能重考不合理", "fix": "修改重考拦截逻辑：仅已通过的成绩阻止重考，未通过允许再考", "files": ["js/pages/exam.js:23"]}
+  ]
+}

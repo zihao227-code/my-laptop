@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧪 测试仪表盘</title>
+<style>
+:root {
+  --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --muted:#8b949e;
+  --green:#3fb950; --red:#f85149; --orange:#d2991d; --blue:#58a6ff; --purple:#a371f7;
+  --module-auth:#58a6ff; --module-course:#3fb950; --module-funding:#d2991d; --module-exam:#a371f7;
+  --module-payment:#f0883e; --module-browse:#79c0ff; --module-session:#f778ba; --module-admin:#7ee787;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+.container{max-width:1400px;margin:0 auto;padding:24px}
+
+/* Header */
+.header{text-align:center;padding:32px 0 20px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.header h1{font-size:28px;font-weight:700;margin-bottom:4px}
+.header .sub{color:var(--muted);font-size:13px}
+.header .status-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;animation:pulse 2s infinite}
+.status-all-pass{background:var(--green)}.status-has-fail{background:var(--red)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* Summary */
+.summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+.summary-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center}
+.summary-card .num{font-size:36px;font-weight:700}
+.summary-card .label{font-size:12px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+.num-pass{color:var(--green)}.num-fail{color:var(--red)}.num-skip{color:var(--orange)}.num-total{color:var(--blue)}.num-time{color:var(--purple)}
+
+/* Pass Rate Ring */
+.pass-rate-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px;display:flex;align-items:center;gap:24px;margin-bottom:24px}
+.ring{width:120px;height:120px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .bg-circle{fill:none;stroke:var(--border);stroke-width:10}
+.ring .fg-circle{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s}
+.ring .percent{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700}
+.rate-info{flex:1}
+.rate-info h3{font-size:16px;margin-bottom:8px}
+.rate-bar{height:8px;background:var(--border);border-radius:4px;margin-bottom:8px;overflow:hidden}
+.rate-fill{height:100%;border-radius:4px;transition:width 1s}.rate-fill.pass{background:var(--green)}.rate-fill.fail{background:var(--red)}
+
+/* Grid sections */
+.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.section{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px}
+.section h3{font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* Module cards */
+.module-list{display:flex;flex-direction:column;gap:10px}
+.module-item{display:flex;align-items:center;gap:12px;padding:10px 12px;background:#0d1117;border-radius:8px;font-size:13px}
+.module-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.module-name{flex:1;font-weight:600}
+.module-stats{font-size:12px;color:var(--muted)}
+.module-bar{width:120px;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.module-bar-fill{height:100%;border-radius:3px;transition:width .8s}
+
+/* Bug type */
+.type-list{display:flex;flex-direction:column;gap:8px}
+.type-item{display:flex;align-items:center;gap:10px;font-size:13px;padding:8px 12px;background:#0d1117;border-radius:6px}
+.type-count{font-weight:700;font-size:16px;min-width:30px}
+
+/* Failures table */
+.failures-section{margin-bottom:24px}
+.failures-section h3{margin-bottom:12px}
+.failure-table{width:100%;border-collapse:collapse;font-size:13px}
+.failure-table th{text-align:left;padding:8px 12px;color:var(--muted);font-size:11px;font-weight:600;border-bottom:1px solid var(--border)}
+.failure-table td{padding:10px 12px;border-bottom:1px solid var(--border)}
+.sev-p0{color:var(--red);font-weight:700}.sev-p1{color:var(--orange);font-weight:600}.sev-p2{color:var(--muted)}.sev-p3{color:var(--muted);font-style:italic}
+
+/* Test list */
+.test-list{max-height:400px;overflow-y:auto}
+.test-row{display:flex;align-items:center;gap:10px;padding:8px 12px;font-size:13px;border-bottom:1px solid var(--border)}
+.test-row:hover{background:#1c2128}
+.test-icon{font-size:16px;width:20px;text-align:center}
+.test-title{flex:1}
+.test-duration{font-size:11px;color:var(--muted);min-width:50px;text-align:right}
+.test-module-tag{padding:2px 6px;border-radius:8px;font-size:10px;font-weight:600;white-space:nowrap}
+
+/* Refresh bar */
+.refresh-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px}
+.refresh-bar .last-update{font-size:12px;color:var(--muted)}
+.auto-refresh{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.auto-refresh input{margin:0}
+
+/* Buttons */
+.btn{padding:8px 16px;border:1px solid var(--border);border-radius:6px;font-size:12px;cursor:pointer;background:var(--card);color:var(--text);font-weight:600;transition:.15s}
+.btn:hover{background:#1c2128}.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-sm{padding:4px 10px;font-size:11px}
+
+/* Empty state */
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty .icon{font-size:64px;margin-bottom:12px}
+
+/* Footer */
+.footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:32px}
+
+/* Filter tabs */
+.filter-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.filter-tab{padding:4px 12px;border-radius:12px;font-size:11px;cursor:pointer;background:#0d1117;border:1px solid var(--border);color:var(--muted)}
+.filter-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* Responsive */
+@media(max-width:900px){.summary-grid{grid-template-columns:repeat(3,1fr)}.section-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>🧪 测试仪表盘 <span id="statusDot" class="status-dot status-has-fail"></span></h1>
+    <p class="sub" id="headerInfo">加载测试报告...</p>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-grid" id="summaryGrid"></div>
+
+  <!-- Pass rate + Module breakdown -->
+  <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px" id="rateModules"></div>
+
+  <!-- Bug types + Run history -->
+  <div class="section-grid" id="detailSections"></div>
+
+  <!-- Test list + Failures -->
+  <div class="section" id="testListSection"></div>
+  <div class="section failures-section" id="failuresSection"></div>
+
+  <div class="footer">🧪 测试仪表盘 · 由 测试大师 Agent 驱动 · 基于 Playwright E2E 测试报告生成</div>
+</div>
+
+<script>
+// ===== 读取测试报告 =====
+const MODULE_COLORS = {
+  '认证权限': '#58a6ff', '课程管理': '#3fb950', 'Funding引擎': '#d2991d',
+  '考试系统': '#a371f7', '交易支付': '#f0883e', '官网浏览': '#79c0ff',
+  '备课管理': '#f778ba', '用户管理': '#7ee787', '消息系统': '#db6d28',
+  '其他': '#8b949e'
+};
+
+let currentFilter = 'all';
+let autoRefreshTimer = null;
+
+async function loadReport() {
+  try {
+    const res = await fetch('tests/results/latest.json?' + Date.now());
+    if (!res.ok) throw new Error('报告未找到');
+    const report = await res.json();
+    renderDashboard(report);
+  } catch(e) {
+    renderEmpty();
+  }
+}
+
+function renderEmpty() {
+  document.getElementById('headerInfo').textContent = '暂无测试报告 — 运行 node tests/run-tests.js 生成';
+  document.getElementById('summaryGrid').innerHTML = `
+    <div class="empty" style="grid-column:1/-1">
+      <div class="icon">📭</div>
+      <h3>还没有测试报告</h3>
+      <p>在终端运行以下命令来生成：</p>
+      <code style="background:var(--card);padding:8px 16px;border-radius:6px;display:inline-block;margin-top:8px">node tests/run-tests.js</code>
+      <p style="margin-top:16px"><button class="btn btn-primary" onclick="loadReport()">🔄 刷新</button></p>
+    </div>`;
+}
+
+function renderDashboard(report) {
+  const { summary, byModule, byType, failures, all, runId, timestamp } = report;
+
+  // Status
+  const allPass = summary.failed === 0;
+  document.getElementById('statusDot').className = 'status-dot ' + (allPass ? 'status-all-pass' : 'status-has-fail');
+  document.getElementById('headerInfo').textContent =
+    `Run: ${new Date(runId).toLocaleString()} · ${summary.total} 用例 · ${summary.duration}s`;
+
+  // Summary cards
+  document.getElementById('summaryGrid').innerHTML = `
+    <div class="summary-card"><div class="num num-total">${summary.total}</div><div class="label">总计用例</div></div>
+    <div class="summary-card"><div class="num num-pass">${summary.passed}</div><div class="label">✅ 通过</div></div>
+    <div class="summary-card"><div class="num num-fail">${summary.failed}</div><div class="label">❌ 失败</div></div>
+    <div class="summary-card"><div class="num num-skip">${summary.skipped}</div><div class="label">⏭ 跳过</div></div>
+    <div class="summary-card"><div class="num num-time">${summary.duration}s</div><div class="label">⏱ 耗时</div></div>
+  `;
+
+  const passRate = summary.total > 0 ? Math.round((summary.passed / summary.total) * 100) : 0;
+  const circumference = 2 * Math.PI * 45;
+  const offset = circumference - (passRate / 100) * circumference;
+
+  // Module breakdown
+  const moduleHTML = Object.entries(byModule || {}).sort((a,b) => b[1].total - a[1].total).map(([name, stats]) => {
+    const pct = stats.total > 0 ? Math.round((stats.passed / stats.total) * 100) : 0;
+    const color = MODULE_COLORS[name] || '#8b949e';
+    return `<div class="module-item">
+      <div class="module-dot" style="background:${color}"></div>
+      <div class="module-name">${name}</div>
+      <div class="module-stats">${stats.passed}/${stats.total} (${pct}%)</div>
+      <div class="module-bar"><div class="module-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Bug types
+  const typeHTML = Object.entries(byType || {}).sort((a,b) => b[1] - a[1]).map(([name, count]) => `
+    <div class="type-item"><span class="type-count" style="color:var(--red)">${count}</span>${name}</div>
+  `).join('') || '<p style="color:var(--muted);font-size:13px">🎉 没有发现 Bug！</p>';
+
+  // Rate + modules
+  document.getElementById('rateModules').innerHTML = `
+    <div class="pass-rate-card">
+      <div class="ring">
+        <svg width="120" height="120" viewBox="0 0 120 120"><circle class="bg-circle" cx="60" cy="60" r="45"/><circle class="fg-circle" cx="60" cy="60" r="45" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" style="stroke:${passRate>=80?'var(--green)':passRate>=50?'var(--orange)':'var(--red)'}"/></svg>
+        <div class="percent" style="color:${passRate>=80?'var(--green)':passRate>=50?'var(--orange)':'var(--red)'}">${passRate}%</div>
+      </div>
+      <div class="rate-info">
+        <h3>通过率</h3>
+        <div class="rate-bar"><div class="rate-fill pass" style="width:${passRate}%"></div></div>
+        <div style="font-size:12px;color:var(--muted)">${summary.passed} 通过 / ${summary.total} 总计</div>
+      </div>
+    </div>
+    <div class="section">
+      <h3>📦 模块分布</h3>
+      <div class="module-list">${moduleHTML || '<p style="color:var(--muted);font-size:13px">暂无数据</p>'}</div>
+    </div>`;
+
+  // Detail sections
+  document.getElementById('detailSections').innerHTML = `
+    <div class="section"><h3>🐛 Bug 类型分布</h3><div class="type-list">${typeHTML}</div></div>
+    <div class="section">
+      <h3>📈 质量总评</h3>
+      <div style="font-size:14px;line-height:1.8">
+        ${allPass ? '<p style="color:var(--green);font-size:18px">🎉 全部通过！</p>' : ''}
+        <p>📊 <strong>总体通过率：${passRate}%</strong></p>
+        <p>🔴 <strong>高风险模块：</strong>${getTopFailingModules(byModule)}</p>
+        <p>🐛 <strong>最常见问题：</strong>${getTopBugTypes(byType)}</p>
+        <p>⏱ <strong>测试耗时：</strong>${summary.duration}s</p>
+        <p style="margin-top:12px;font-size:12px;color:var(--muted)">
+          ${passRate >= 90 ? '✅ 质量良好，可发布' : passRate >= 70 ? '⚠️ 有部分问题，建议修复后发布' : '🔴 问题较多，需重点修复'}
+        </p>
+      </div>
+    </div>`;
+
+  // Test list
+  const filteredTests = currentFilter === 'all' ? all : all.filter(t => t.status === currentFilter);
+  const testListHTML = filteredTests.map(t => `
+    <div class="test-row">
+      <span class="test-icon">${t.status === 'passed' ? '✅' : t.status === 'failed' ? '❌' : '⏭'}</span>
+      <span class="test-module-tag" style="background:${MODULE_COLORS[t.module]||'#8b949e'}22;color:${MODULE_COLORS[t.module]||'#8b949e'}">${t.module}</span>
+      <span class="test-title">${t.title}</span>
+      <span class="test-duration">${t.duration > 0 ? (t.duration/1000).toFixed(1)+'s' : ''}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('testListSection').innerHTML = `
+    <h3>📋 全部用例 <span style="font-weight:400;font-size:12px;color:var(--muted)">(${all.length})</span></h3>
+    <div class="filter-tabs">
+      <span class="filter-tab ${currentFilter==='all'?'active':''}" onclick="setFilter('all')">全部</span>
+      <span class="filter-tab ${currentFilter==='passed'?'active':''}" onclick="setFilter('passed')">✅ 通过</span>
+      <span class="filter-tab ${currentFilter==='failed'?'active':''}" onclick="setFilter('failed')">❌ 失败</span>
+    </div>
+    <div class="test-list">${testListHTML || '<p style="color:var(--muted);padding:12px">无匹配用例</p>'}</div>`;
+
+  // Failures
+  const failuresHTML = (failures || []).length === 0
+    ? '<div class="empty"><div class="icon">🎉</div><h3>零失败</h3><p>所有用例通过</p></div>'
+    : `<table class="failure-table">
+      <thead><tr><th>ID</th><th>模块</th><th>类型</th><th>严重度</th><th>错误信息</th></tr></thead>
+      <tbody>${failures.map(f => `
+        <tr>
+          <td>${f.id}</td><td><span style="color:${MODULE_COLORS[f.module]||'#8b949e'}">${f.module}</span></td>
+          <td>${f.type}</td><td class="sev-${(f.severity||'p2').toLowerCase()}">${f.severity||'P2'}</td>
+          <td style="font-size:12px;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${(f.error||'').replace(/"/g,'&quot;')}">${f.error||''}</td>
+        </tr>`).join('')}
+      </tbody></table>`;
+
+  document.getElementById('failuresSection').innerHTML = `
+    <h3>❌ 失败详情 <span style="font-weight:400;font-size:12px;color:var(--muted)">(${failures.length})</span></h3>
+    ${failuresHTML}`;
+}
+
+function getTopFailingModules(byModule) {
+  if (!byModule) return '无';
+  const failed = Object.entries(byModule).filter(([_,s]) => s.failed > 0).sort((a,b) => b[1].failed - a[1].failed);
+  if (failed.length === 0) return '无';
+  return failed.slice(0,3).map(([n,s]) => `${n}(${s.failed}个)`).join('、');
+}
+
+function getTopBugTypes(byType) {
+  if (!byType || Object.keys(byType).length === 0) return '无';
+  return Object.entries(byType).sort((a,b) => b[1] - a[1]).slice(0,3).map(([n,c]) => `${n}(${c}个)`).join('、');
+}
+
+function setFilter(f) { currentFilter = f; loadReport(); }
+
+// Auto refresh toggle
+document.addEventListener('keydown', e => {
+  if (e.key === 'r' && e.ctrlKey) { e.preventDefault(); loadReport(); }
+});
+
+// Initial load
+loadReport();
+
+// Auto-refresh every 30s
+autoRefreshTimer = setInterval(loadReport, 30000);
+</script>
+</body>
+</html>
