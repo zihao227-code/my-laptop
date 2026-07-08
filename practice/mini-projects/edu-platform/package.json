@@ -1,0 +1,14 @@
+{
+  "name": "edu-platform",
+  "version": "1.0.0",
+  "description": "教育平台 - AI 驱动的一站式学习管理系统",
+  "scripts": {
+    "test": "node tests/run-tests.js",
+    "test:e2e": "npx playwright test",
+    "serve": "npx http-server . -p 3456 -c-1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "http-server": "^14.1.1"
+  }
+}
