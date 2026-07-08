@@ -23,7 +23,7 @@ const Router = {
   _run(name, params) {
     // 'home' 和 'login' 始终可访问
     if (name !== 'home' && name !== 'login' && !Auth.canAccess(name)) {
-      if (Auth.isLoggedIn) { Router.navigate('dashboard'); return; }
+      if (Auth.isLoggedIn) { Router.navigate('home'); return; }
       else { Utils.toast('请先登录', 'error'); Router.navigate('login'); return; }
     }
 
@@ -45,9 +45,9 @@ const Router = {
       sessionStorage.removeItem('_routeParams');
       this._run(hash, params);
     });
-    const initHash = window.location.hash.slice(1) || 'home';
-    if (initHash !== 'home') window.location.hash = '#home';
-    else this._run('home', {});
+    const initHash = window.location.hash.slice(1) || (Auth.isLoggedIn ? 'dashboard' : 'home');
+    if (initHash !== 'home' && initHash !== 'dashboard') window.location.hash = '#' + initHash;
+    else this._run(initHash, {});
   },
 
   go(name, params = {}) {

@@ -40,7 +40,6 @@
 
     const userHTML = user
       ? `<div class="user-area">${Utils.roleBadge(user.role)} <strong>${Utils.escape(user.name)}</strong>
-         <button class="btn btn-outline btn-sm" onclick="Router.go('dashboard')">📊 面板</button>
          <button class="btn btn-outline btn-sm" onclick="Auth.logout();Router.go('home')">退出</button></div>`
       : `<div class="user-area"><button class="btn btn-primary btn-sm" onclick="Router.go('login')">登录</button></div>`;
 
@@ -59,7 +58,8 @@
     const items = [];
     if (role === 'guest') return items;
 
-    items.push({ route: 'home', label: '课程市场', icon: '🏠' });
+    items.push({ route: 'dashboard', label: '工作台', icon: '🏠' });
+    items.push({ route: 'home', label: '课程市场', icon: '📚' });
 
     if (['Admin', 'Editor'].includes(role)) {
       items.push({ route: 'courses', label: '课程管理', icon: '📋' });

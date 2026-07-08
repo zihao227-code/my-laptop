@@ -97,6 +97,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bug-item .bug-header{font-weight:700;margin-bottom:4px}
 .bug-item .bug-detail{color:var(--muted);font-size:12px;line-height:1.6}
 
+/* ===== Test Accounts (增量) ===== */
+.accounts-section{margin-top:32px}
+.accounts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+.account-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px}
+.account-card .acct-role{font-weight:700;font-size:15px;margin-bottom:4px}
+.account-card .acct-email{font-size:11px;color:var(--muted);margin-bottom:8px;font-family:monospace}
+.account-card .acct-routes{font-size:11px;color:var(--muted);line-height:1.6}
+.account-card .acct-pwd{font-size:10px;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+
 /* ===== Legend ===== */
 .legend{display:flex;gap:20px;margin-bottom:24px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
 .legend span{display:flex;align-items:center;gap:6px}
@@ -532,6 +541,46 @@ BUG_LOG.forEach(b => {
     </div>
   </div>`;
 });
+
+// ===== Test Accounts (增量渲染) =====
+(function renderAccounts() {
+  const section = document.createElement('div');
+  section.className = 'accounts-section';
+  section.innerHTML = `
+    <h2>🔑 测试账号速查</h2>
+    <div class="desc">所有账号密码均为 <code>123456</code>。点击账号可快速切换角色进行测试。</div>
+    <div class="accounts-grid">
+      <div class="account-card">
+        <div class="acct-role">👑 Admin</div>
+        <div class="acct-email">admin@edu.cn</div>
+        <div class="acct-routes">可访问：工作台 · 课程市场 · 课程管理 · Funding · 订单 · 备课 · 考试 · 消息 · 用户管理</div>
+        <div class="acct-pwd">🔑 密码：123456</div>
+      </div>
+      <div class="account-card">
+        <div class="acct-role">📋 Editor</div>
+        <div class="acct-email">editor@edu.cn</div>
+        <div class="acct-routes">可访问：工作台 · 课程市场 · 课程管理 · Funding · 订单 · 消息</div>
+        <div class="acct-pwd">🔑 密码：123456</div>
+      </div>
+      <div class="account-card">
+        <div class="acct-role">👨‍🏫 Trainer</div>
+        <div class="acct-email">trainer@edu.cn</div>
+        <div class="acct-routes">可访问：工作台 · 课程市场 · 我的课程 · 备课管理 · 消息</div>
+        <div class="acct-pwd">🔑 密码：123456</div>
+      </div>
+      <div class="account-card">
+        <div class="acct-role">🎓 Learner</div>
+        <div class="acct-email">learner@edu.cn</div>
+        <div class="acct-routes">可访问：工作台 · 课程市场 · 订单 · 我的课程 · 考试 · 消息</div>
+        <div class="acct-pwd">🔑 密码：123456</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px 16px;background:#1a3a5c;border-radius:8px;font-size:12px;color:var(--blue)">
+      💡 <strong>快速切换</strong>：登录页底部有快捷按钮，无需手动输入邮箱密码。App 地址：<code style="color:var(--text)">http://localhost:3456</code>
+    </div>
+  `;
+  document.querySelector('.container').appendChild(section);
+})();
 </script>
 </body>
 </html>

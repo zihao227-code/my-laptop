@@ -50,8 +50,13 @@ Pages.Messages = {
       </div>
     `;
 
-    // 更新导航上的未读数字
-    window.renderShell();
+    // 更新导航上的未读数字（精准更新，不重建整个壳）
+    const badge = document.querySelector('.nav .badge');
+    if (badge) {
+      const unreadNow = Store.notifications().filter(n => n.user_id === user.user_id && !n.read).length;
+      if (unreadNow > 0) badge.textContent = unreadNow;
+      else if (badge.parentElement) badge.remove();
+    }
   },
 
   _read(notifId) {

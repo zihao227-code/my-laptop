@@ -40,10 +40,14 @@ const Seed = {
 
     // Funding 协议
     const fundingAgreements = [
-      { agreement_id: 'F001', title: '2026年第三季度技能提升补贴', course_ids: ['C001', 'C003', 'C005'], conditions: { min_work_years: 0, eligible_roles: ['Learner'] },
-        funding_amount: 2500, funding_type: 'fixed', valid_from: '2026-07-01', valid_to: '2026-09-30', status: 'active', created_at: '2026-07-01', created_by: 'U002' },
-      { agreement_id: 'F002', title: '企业合作 Java 人才培养计划', course_ids: ['C002'], conditions: { min_work_years: 1, eligible_roles: ['Learner'], eligible_companies: ['某科技公司'] },
-        funding_amount: 3500, funding_type: 'fixed', valid_from: '2026-08-01', valid_to: '2026-12-31', status: 'active', created_at: '2026-07-02', created_by: 'U002' },
+      { agreement_id: 'F001', title: '2026年第三季度技能提升补贴', course_ids: ['C001', 'C003', 'C005'],
+        conditions: { min_work_years: 0, eligible_roles: ['Learner'] },
+        funding_type: 'fixed', funding_amount: 2500, total_budget: 50000,
+        valid_from: '2026-07-01', valid_to: '2026-09-30', status: 'active', created_at: '2026-07-01', created_by: 'U002' },
+      { agreement_id: 'F002', title: '企业合作 Java 人才培养计划', course_ids: ['C002'],
+        conditions: { min_work_years: 1, eligible_roles: ['Learner'], eligible_companies: ['某科技公司'] },
+        funding_type: 'fixed', funding_amount: 3500, total_budget: 35000,
+        valid_from: '2026-08-01', valid_to: '2026-12-31', status: 'active', created_at: '2026-07-02', created_by: 'U002' },
     ];
 
     // 订单

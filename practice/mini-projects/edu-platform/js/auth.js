@@ -52,10 +52,10 @@ const Auth = {
   canAccess(route) {
     const role = this.role;
     const map = {
-      'Admin': ['home', 'courses', 'funding', 'orders', 'myCourses', 'sessions', 'exam', 'messages', 'admin', 'payment'],
-      'Editor': ['home', 'courses', 'funding', 'orders', 'messages', 'payment'],
-      'Trainer': ['home', 'sessions', 'exam', 'messages', 'payment'],
-      'Learner': ['home', 'orders', 'myCourses', 'exam', 'messages', 'payment'],
+      'Admin': ['dashboard', 'home', 'courses', 'funding', 'orders', 'myCourses', 'sessions', 'exam', 'messages', 'admin', 'payment'],
+      'Editor': ['dashboard', 'home', 'courses', 'funding', 'orders', 'messages', 'payment'],
+      'Trainer': ['dashboard', 'home', 'myCourses', 'sessions', 'exam', 'messages', 'payment'],
+      'Learner': ['dashboard', 'home', 'orders', 'myCourses', 'exam', 'messages', 'payment'],
       'guest': ['home', 'login'],
     };
     return (map[role] || map['guest']).includes(route);

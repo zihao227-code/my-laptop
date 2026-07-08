@@ -33,6 +33,7 @@ admin@edu.cn / editor@edu.cn / trainer@edu.cn / learner@edu.cn
 3. **Bug 归因**：每个 Bug 标注模块+类型+严重度（P0-P3）
 4. **更新脚本**：代码变更后自动评估影响范围，更新测试
 5. **生成报告**：运行 `node tests/run-tests.js`，更新 `tests/results/latest.json`
+6. **前端可视化断言（强制）**：每条测试必须验证用户看到的内容——有数据什么样、没数据什么样。禁止只检查 console.error 就通过。
 
 ## Bug 分类体系
 - **模块**：认证权限/课程管理/Funding引擎/考试系统/交易支付/官网浏览/备课管理/用户管理/消息系统/路由导航
