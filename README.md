@@ -37,8 +37,8 @@
 ## 🚀 快速开始
 
 ```bash
-# 1. 克隆到本地
-git clone <your-repo-url> knowledge-base
+# 1. 克隆知识库（独立分支）
+git clone -b knowledge-base https://github.com/zihao227-code/my-laptop.git knowledge-base
 
 # 2. 用 Obsidian 打开
 # Obsidian → Open folder as vault → 选择 knowledge-base 目录
@@ -48,6 +48,12 @@ git clone <your-repo-url> knowledge-base
 # 链接其他笔记: [[笔记名]]
 # 搜索: Ctrl/Cmd + Shift + F
 ```
+
+### 🔄 Git 同步
+
+- **仓库**：`github.com/zihao227-code/my-laptop`（`knowledge-base` 分支）
+- **自动推送**：每天 21:07 自动 commit + push
+- **手动推送**：`git push origin master:knowledge-base`
 
 ---
 
