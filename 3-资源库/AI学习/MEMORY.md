@@ -1,0 +1,6 @@
+- [一人公司长期愿景](.claude/memory/long-term-vision.md) — 用户希望通过 AI + Coding 实现一人公司全链路能力
+- [多电脑同步方案](.claude/memory/home-computer-sync.md) — 公司/家里电脑通过 GitHub 保持学习环境同步
+- [教育平台起始项目](.claude/memory/edu-platform-starter.md) — 将教育平台打造为完善的起始项目，在实战中覆盖各类问题
+- [VIBE CODING 概念学习](.claude/memory/vibe-coding-concepts.md) — 系统学习鉴权、知识库、RAG、Agent 等基础概念
+- [Agent/Skill 审计](.claude/memory/agent-skill-audit.md) — 评估 6 个 Agent 实用性，实际活跃 3 个核心
+- [学习日志系统](.claude/memory/learning-log-system.md) — 四层架构（计划→过程→知识→上下文），Markdown + frontmatter 格式

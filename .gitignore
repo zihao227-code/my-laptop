@@ -14,6 +14,20 @@ desktop.ini
 .claude/settings.local.json
 .mcp.json
 
+# Obsidian
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/hotkeys.json
+.obsidian/community-plugins.json
+.obsidian/plugins/
+.obsidian/themes/
+.trash/
+
 # Temp files
 *.tmp
 ~$*
+
+# Attachments
+_attachments/*.mp4
+_attachments/*.mov
+_attachments/*.zip
