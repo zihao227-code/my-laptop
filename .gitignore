@@ -1,0 +1,18 @@
+# Obsidian
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/hotkeys.json
+.obsidian/community-plugins.json
+.obsidian/plugins/
+.obsidian/themes/
+.trash/
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Attachments (large files — manage separately if needed)
+_attachments/*.mp4
+_attachments/*.mov
+_attachments/*.zip

@@ -1,0 +1,15 @@
+{
+  "newFileLocation": "current",
+  "newFileFolderPath": "_inbox",
+  "attachmentFolderPath": "_attachments",
+  "showUnsupportedFiles": true,
+  "trashOption": "local",
+  "alwaysUpdateLinks": true,
+  "promptDelete": true,
+  "showLineNumber": false,
+  "readableLineLength": true,
+  "spellcheck": true,
+  "defaultViewMode": "source",
+  "livePreview": true,
+  "propertiesInDocument": "visible"
+}
