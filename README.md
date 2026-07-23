@@ -1,6 +1,17 @@
-# 🧠 个人知识库
+# 🧠 AI 产品经理学习知识库
 
-> 我的第二大脑 — 持续迭代、深化、沉淀
+> 从零基础 BA 到 AI PM — 持续迭代、深化、沉淀
+
+## 👤 关于库主
+
+- **身份**: 软件公司 BA（Business Analyst）
+- **编程基础**: 零基础/入门
+- **学习目标**: AI PM 转型，最终实现 🚀 一人公司
+- **学习原则**: 概念 + 实践并重 / 从 BA 视角出发 / 渐进式难度 / 记录与复盘
+
+## 🗺️ 新手入口
+
+👉 **如果你是来学 AI 的，直接看 [[START-HERE]]** — 按顺序读，不走弯路
 
 ---
 
@@ -38,7 +49,7 @@
 
 ```bash
 # 1. 克隆知识库（独立分支）
-git clone -b knowledge-base https://github.com/zihao227-code/my-laptop.git knowledge-base
+git clone git@github.com:zihao227-code/my-laptop.git
 
 # 2. 用 Obsidian 打开
 # Obsidian → Open folder as vault → 选择 knowledge-base 目录
